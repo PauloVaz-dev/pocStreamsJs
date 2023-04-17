@@ -32,15 +32,17 @@ const readable = Readable({
 
 const writeToS3 = Writable({
     write(chunk, encoding, cb) {  
-        console.log(chunk)   
+        console.log(chunk.toString())
+        const readableStream = Readable.from(chunk); 
         s3.upload({
             Bucket: 'poc-s3-vaz',
             Key: 'teste-bucket.txt',
-            Body: chunk
+            Body: readableStream
         }, (err, data) => {
             if (err) throw err;
             console.log('Arquivo enviado com sucesso para o S3!');
         });
+        cb(null, chunk)
     }
   })
 
