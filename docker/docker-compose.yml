@@ -1,0 +1,43 @@
+version: "3"
+services:
+
+  # dynamodb:
+  #   image: amazon/dynamodb-local:latest
+  #   ports:
+  #     - "8000:8000"
+
+  sqs:
+    image: softwaremill/elasticmq-native:latest
+    ports:
+      - "9324:9324"
+    command: "-Dnode-address.host=\"*\""
+
+  s3:
+    image: minio/minio:latest
+    command: server /data
+    ports:
+      - "9000:9000"
+    environment:
+      - AWS_ACCESS_KEY_ID=local
+      - AWS_SECRET_ACCESS_KEY=locallocal
+      - MINIO_ROOT_USER=local
+      - MINIO_ROOT_PASSWORD=locallocal
+      - AWS_DEFAULT_REGION=sa-west-1
+      - AWS_ENDPOINT_URL=http://s3:9000
+  db: 
+    image: postgres
+    restart: always
+    environment:
+      - POSTGRES_USER=postgres
+      - POSTGRES_PASSWORD=docker
+      - POSTGRES_DB=docker
+    ports:
+      - '5432:5432'
+    volumes: 
+      - pgdata:/var/lib/postgresql/data
+
+volumes:
+  pgdata:
+    driver: local
+
+  
