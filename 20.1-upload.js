@@ -2,11 +2,6 @@
 import AWS from 'aws-sdk'
 import { Readable, Transform } from 'stream'
 
-import fs from 'fs'
-
-
-
-
 // Crie um cliente do S3
 const s3 = new AWS.S3({
     s3ForcePathStyle: true,
@@ -18,8 +13,6 @@ const s3 = new AWS.S3({
     region: 'sa-east-1',
 });
 
-
-
 // Crie uma `readable stream` que contém o texto "Olá, mundo!"
 const readableStream = new Readable({
     read() {
@@ -29,8 +22,6 @@ const readableStream = new Readable({
         this.push(null);
     }
 });
-
-
 
 // Envie o conteúdo da `readable stream` para o S3
 s3.upload({
