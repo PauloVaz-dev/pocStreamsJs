@@ -55,22 +55,17 @@ async function upload(streams) {
                 Key: 'teste-bucket.txt',
                 Body: data,
             }
-
             const multipartUpload = new Upload({
                 client: s3,
                 params: input,
                 leavePartsOnError: true
-
             });
             multipartUpload.done()
-            console.log("Upload file to:", `s3://${input.Bucket}/${input.Key}`);
-
         } catch (error) {
             console.log(error)
         }
     }
 }
-
 
 await pipelineAsync(
     getStatus,
