@@ -9,9 +9,19 @@ Projeto destinado a fazer stremas do banco e salvar no S3.
 cd docker
 ~/.docker/cli-plugins/docker-compose up
 ```
-#### Criar o bucket
+
 ```bash
+# Criar o bucket
 aws --endpoint-url=http://127.0.0.1:9000 s3api create-bucket --bucket poc-s3-vaz
+
+# List buckets
+aws --endpoint-url=http://127.0.0.1:9000 s3api list-buckets
+
+# List bucket files
+aws --endpoint-url=http://127.0.0.1:9000 s3 ls s3://poc-s3-vaz
+
+# Copy bucket to local
+aws --endpoint-url=http://127.0.0.1:9000 s3 cp s3://poc-s3-vaz/file.json .
 ```
 
 ## 2 - Para rodar alguns dos scripts:
@@ -41,6 +51,15 @@ CLIMEM=8000 npx ts-node-dev -r climem  knexv4.ts
 
 #### Em outro terminal rode
 npx climem 8000
+
+1 - __doMultipartUpload
+        getChunk //pega o chunck
+2-      __doConcurrentUpload
+            __uploadUsingPut //Resposável pela primeira parte e ultima do upload
+            __createMultipartUpload()
+            byteLength
+            __notifyProgress
+
 
 
 
