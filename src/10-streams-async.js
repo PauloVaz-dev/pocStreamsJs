@@ -37,7 +37,6 @@ const db = knex({
     connection
 })
 
-
 async function upload() {
     const knexStream = db.select('*').limit(50000).from('status').stream()
     const passThroughStream = new PassThrough();
@@ -45,17 +44,14 @@ async function upload() {
     knexStream.on('data', (chunk) => passThroughStream.write(JSON.stringify(chunk) + '\n'));
     knexStream.on('end', () => passThroughStream.end());
     
-
-    
     console.log('fim')
 
-     const input = {
+    const input = {
         ACL: "public-read",  // ACL not needed if CloudFront can pull via OAI
         Bucket: 'poc-s3-vaz',
         Key: 'file.json',
         Body: passThroughStream,
     }
-
 
     const multipartUpload = new Upload({
         client: s3,
